@@ -8,14 +8,29 @@ package com.example.calculator.models;
 import java.math.BigDecimal;
 
 /**
- *
+ * Information data about a particular loan
  * @author Filip PC
  */
 public class LoanInfoData {
+    /**
+     * Total amount to be paid per month.
+     */
     private int monthlyPayment;
+    /**
+     * Interest rate in %
+     */
     private BigDecimal interestRate;
+    /**
+     * APR in %
+     */
     private BigDecimal apr;
+    /**
+     * Monthly amount to be paid for the insurance.
+     */
     private int insurance;
+    /**
+     * Total amount to be paid for the loan.
+     */
     private int totalAmount;
 
     public int getMonthlyPayment() {

@@ -5,7 +5,7 @@
  */
 package com.example.calculator.services;
 
-import com.example.calculator.models.LoanInfoConstraint;
+import com.example.calculator.models.LoanPropertiesRule;
 import com.example.calculator.models.LoanInfoData;
 import com.example.calculator.models.LoanInputData;
 import com.example.calculator.repositories.LoanInfoConstraintRepository;
@@ -25,16 +25,21 @@ public class LoanCalculatorImpl implements LoanCalculator{
     @Override
     public LoanInfoData retrieveLoanInfoData(LoanInputData loanInputData) {
         BigDecimal ratio = new BigDecimal(loanInputData.getAmount()).divide(new BigDecimal(loanInputData.getTerm()), 2);
-        for(LoanInfoConstraint constraint : loanInfoConstraintRepository.findAllByOrderByMaxRatio()){
-            System.out.println(constraint.getMaxRatio());
-        }
-        
-        LoanInfoData loanInfoData = new LoanInfoData();
-        loanInfoData.setApr(new BigDecimal(11.25));
-        loanInfoData.setInsurance(loanInputData.isInsured() ? 100 : 0);
-        loanInfoData.setInterestRate(new BigDecimal(5.05));
-        loanInfoData.setMonthlyPayment(new BigDecimal(loanInputData.getAmount()).divide(new BigDecimal(loanInputData.getTerm()), 2).multiply(loanInfoData.getInterestRate()).intValue());
-        loanInfoData.setTotalAmount(new BigDecimal(loanInputData.getAmount()).multiply(loanInfoData.getApr()).intValue());
+        LoanInfoData loanInfoData = null;
+        for(LoanPropertiesRule rule : loanInfoConstraintRepository.findAllByOrderByMaxRatio()){
+            if(ratio.compareTo(new BigDecimal(rule.getMaxRatio())) <= 0){
+                loanInfoData = new LoanInfoData();
+                loanInfoData.setApr(rule.getArp());
+                loanInfoData.setInterestRate(rule.getInterestRate());
+                loanInfoData.setInsurance(loanInputData.isInsured() ? rule.getInsurance() : 0);
+                BigDecimal monthlyRate = rule.getInterestRate().divide(new BigDecimal(100)).divide(new BigDecimal(12), 2);
+                BigDecimal a = monthlyRate.add(new BigDecimal(1)).pow(loanInputData.getTerm());                               
+                loanInfoData.setMonthlyPayment(new BigDecimal(loanInputData.getAmount()).multiply(monthlyRate).multiply(a)
+                                .divide(a.subtract(new BigDecimal(1)), 2).intValue() + loanInfoData.getInsurance());
+                loanInfoData.setTotalAmount(loanInputData.getTerm() * loanInfoData.getMonthlyPayment());
+                break;
+            }
+        }        
         return loanInfoData;
     }
     

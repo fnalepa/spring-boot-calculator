@@ -8,14 +8,23 @@ package com.example.calculator.models;
 import javax.validation.constraints.Min;
 
 /**
- *
+ * Input data based on which loan information data can be provided.
  * @author Filip PC
  */
 public class LoanInputData {
+    /**
+     * Amount to be loaned.
+     */
     @Min(1)
     private int amount;
+    /**
+     * Number of months until the loan is paid.
+     */
     @Min(1)
     private int term;
+    /**
+     * Whether the loan is insured against unavailability of paying.
+     */
     private boolean insured;
 
     public int getAmount() {

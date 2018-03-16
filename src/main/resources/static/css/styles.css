@@ -1,0 +1,19 @@
+.form-control{
+    display: inline-block;
+    width: 50%;
+}
+label{
+    display: block;
+}
+h1{
+    font-size: 2.2rem;
+}
+h2{
+    font-size: 1.5rem;
+}
+.text-large{
+    font-size: 1.5rem;
+}
+.text-lighter{
+    font-weight: lighter;
+}

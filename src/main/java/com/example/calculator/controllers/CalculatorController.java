@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- *
+ * Controller providing information about loans based on given input data.
  * @author Filip PC
  */
 @RestController
@@ -22,7 +22,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class CalculatorController {
     @Autowired
     private LoanCalculator loanCalculator;
-    
+    /**
+     * Provides information about a loan based on given input data.
+     * @param loanInputData loan input data
+     * @return information about a loan based on given input data or null if no information is not able to be provided
+     */
     @RequestMapping("/getLoanInfoData")
     public LoanInfoData getLoanInfoData(@Valid LoanInputData loanInputData){
         return loanCalculator.retrieveLoanInfoData(loanInputData);

@@ -20,7 +20,7 @@ import javax.validation.constraints.NotNull;
  * @author Filip PC
  */
 @Entity
-public class LoanInfoConstraint implements Serializable {
+public class LoanPropertiesRule implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -88,10 +88,10 @@ public class LoanInfoConstraint implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        if (!(object instanceof LoanInfoConstraint)) {
+        if (!(object instanceof LoanPropertiesRule)) {
             return false;
         }
-        LoanInfoConstraint other = (LoanInfoConstraint) object;
+        LoanPropertiesRule other = (LoanPropertiesRule) object;
         return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
     }
 
