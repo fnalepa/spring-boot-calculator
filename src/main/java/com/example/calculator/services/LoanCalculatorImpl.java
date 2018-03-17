@@ -8,25 +8,31 @@ package com.example.calculator.services;
 import com.example.calculator.models.LoanPropertiesRule;
 import com.example.calculator.models.LoanInfoData;
 import com.example.calculator.models.LoanInputData;
-import com.example.calculator.repositories.LoanInfoConstraintRepository;
 import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.example.calculator.repositories.LoanPropertiesRuleRepository;
 
 /**
- *
+ * Implementation of {@link LoanCalculator} using {@link LoanPropertiesRuleRepository} to infer the information about loans.
  * @author Filip PC
  */
 @Service
 public class LoanCalculatorImpl implements LoanCalculator{
     @Autowired
-    private LoanInfoConstraintRepository loanInfoConstraintRepository;
-    
+    private LoanPropertiesRuleRepository loanPropertiesRuleRepository;
+    /**
+     * Finds the loan properties rule with the lowest maxRatio for which it holds that maxRatio &gt;= amount/term.
+     * The information about the loan is infered from the found loan properties rule.
+     * The monthly payment is computed as: (amount*(interestRate/(100*12))*(1+interestRate/(100*12))^term)/((1+interestRate/(100*12))^term - 1)
+     * @param loanInputData loan input data
+     * @return information about the loan infered from the found loan properties rule or null of no adequate rule is found
+     */
     @Override
     public LoanInfoData retrieveLoanInfoData(LoanInputData loanInputData) {
         BigDecimal ratio = new BigDecimal(loanInputData.getAmount()).divide(new BigDecimal(loanInputData.getTerm()), 2);
         LoanInfoData loanInfoData = null;
-        for(LoanPropertiesRule rule : loanInfoConstraintRepository.findAllByOrderByMaxRatio()){
+        for(LoanPropertiesRule rule : loanPropertiesRuleRepository.findAllByOrderByMaxRatio()){
             if(ratio.compareTo(new BigDecimal(rule.getMaxRatio())) <= 0){
                 loanInfoData = new LoanInfoData();
                 loanInfoData.setApr(rule.getArp());

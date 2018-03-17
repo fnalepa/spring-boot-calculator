@@ -16,7 +16,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 /**
- *
+ * An instance of this class represents properties of a loan based on the maximal ratio of the loan amount and its term.
  * @author Filip PC
  */
 @Entity
@@ -26,14 +26,26 @@ public class LoanPropertiesRule implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    /**
+     * Maximal ratio of the loan amount and its term
+     */
     @Column(unique=true)    
     private int maxRatio;
+    /**
+     * Annual interest rate in %
+     */
     @NotNull
     @Min(0)
     private BigDecimal interestRate;
+    /**
+     * ARP in %
+     */
     @NotNull
     @Min(0)    
     private BigDecimal arp;
+    /**
+     * Monthly insurance to be paid
+     */
     @Min(0)
     private int insurance;    
 

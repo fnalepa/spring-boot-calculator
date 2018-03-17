@@ -10,9 +10,13 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- *
+ * Repository of loan properties rules
  * @author Filip PC
  */
-public interface LoanInfoConstraintRepository extends JpaRepository<LoanPropertiesRule, Long> {
+public interface LoanPropertiesRuleRepository extends JpaRepository<LoanPropertiesRule, Long> {
+    /**
+     * Retrieves all loan properties rules ordered by {@link LoanPropertiesRule#maxRatio}.
+     * @return loan properties rules ordered by {@link LoanPropertiesRule#maxRatio}
+     */
     public List<LoanPropertiesRule> findAllByOrderByMaxRatio();
 }
